@@ -1,0 +1,54 @@
+version: '3.2'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=nextcloud
+      - POSTGRES_USER=nextcloud
+      - POSTGRES_PASSWORD=nextcloud
+    networks:
+      - internal
+
+  app:
+    image: nextcloud
+    restart: always
+    volumes:
+      - nextcloud:/var/www/html
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=nextcloud
+      - POSTGRES_USER=nextcloud
+      - POSTGRES_PASSWORD=nextcloud
+      - VIRTUAL_HOST=nextcloud.your-domain.com
+      - LETSENCRYPT_HOST=nextcloud.your-domain.com
+      - LETSENCRYPT_EMAIL=foo@bar.com
+    depends_on:
+      - db
+    networks:
+      - internal
+      - frontend
+
+  cron:
+    image: nextcloud
+    restart: always
+    volumes:
+      - nextcloud:/var/www/html
+    entrypoint: /cron.sh
+    depends_on:
+      - db
+    networks:
+      - internal
+
+volumes:
+  db:
+  nextcloud:
+
+networks:
+  internal:
+  frontend:
+    external:
+      name: proxy
