@@ -1,0 +1,31 @@
+version: '2'
+
+services:
+  jenkins:
+    restart: unless-stopped
+    image: jenkins/jenkins:2.108-alpine
+    ports:
+    # - 8080:8080
+    - 50000:50000
+    networks:
+    - internal
+    - proxy
+    volumes:
+    - home:/var/jenkins_home
+    - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+    - VIRTUAL_HOST=jenkins.your-domain.com
+    - LETSENCRYPT_HOST=jenkins.your-domain.com
+    - LETSENCRYPT_EMAIL=foo@bar.com
+    - DOCKER_ENABLE=true
+    - JAVA_OPTS=-Duser.timezone=Asia/Taipei
+
+networks:
+  internal:
+    driver: 'bridge'
+  proxy:
+    external:
+      name: proxy
+
+volumes:
+  home:
