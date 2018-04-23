@@ -12,7 +12,7 @@ services:
     volumes:
      - mysql_data:/var/lib/mysql
   community-server:
-    image: dorowu/onlyoffice-communityserver:9.5.4.553
+    image: dorowu/onlyoffice-communityserver:9.6.1.627
     depends_on:
      - mysql-server
      - document-server
@@ -46,7 +46,7 @@ services:
      - document_data:/var/www/onlyoffice/DocumentServerData
      - certs:/var/www/onlyoffice/Data/certs
   document-server:
-    image: dorowu/onlyoffice-documentserver:5.0.7.38
+    image: dorowu/onlyoffice-documentserver:5.1.2.9
     stdin_open: true
     tty: true
     restart: always

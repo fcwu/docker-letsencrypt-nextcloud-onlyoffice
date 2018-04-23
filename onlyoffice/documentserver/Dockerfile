@@ -1,4 +1,4 @@
-FROM onlyoffice/documentserver:5.0.7.38
+FROM onlyoffice/documentserver:5.1.2.9
 LABEL maintainer="fcwu.tw@gmail.com"
 
 RUN curl -sSL https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | apt-key add - \
